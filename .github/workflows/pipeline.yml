@@ -65,7 +65,7 @@ jobs:
           curl -X POST \
             -H "Authorization: token ${{ secrets.TOKEN_GITHUB }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/proinsighttech/snack-shop-delivery-internal/actions/workflows/pipeline.yml/dispatches \
+            https://api.github.com/repos/proinsighttech/snack-shop-delivery/actions/workflows/pipeline.yml/dispatches \
             -d '{"ref":"main"}'
         shell: bash
     
