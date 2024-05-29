@@ -1,0 +1,117 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:9000/
+  description: Generated server url
+
+paths:
+  /:
+    get:
+      tags:
+      - root-entry-point-controller
+      operationId: root
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootEntryPointModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: listAll
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelUserModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+components:
+  securitySchemes:
+    api_gateway_authorizer-snack-shop:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: custom
+      x-amazon-apigateway-authorizer:
+        type: request
+        authorizerUri: 'arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:279044386247:function:api_gateway_authorizer-snack-shop/invocations'
+        authorizerCredentials: arn:aws:iam::279044386247:role/api_gateway_auth_role-snack-shop
+        identitySource: method.request.header.Authorization, method.request.querystring.cpf
+  schemas:
+    RootEntryPointModel:
+      type: object
+      properties:
+        _links:
+          $ref: '#/components/schemas/Links'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        hreflang:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        profile:
+          type: string
+        name:
+          type: string
+        templated:
+          type: boolean

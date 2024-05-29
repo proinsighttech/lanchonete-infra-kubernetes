@@ -1,0 +1,113 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  build:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
+  deploy:
+    timeout-minutes: 30
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply Without Integration
+        run: terraform apply -var="integration=false" --auto-approve
+      
+      - name: Deploy Application to Integration
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.TOKEN_GITHUB }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/proinsighttech/snack-shop-delivery-internal/actions/workflows/pipeline.yml/dispatches \
+            -d '{"ref":"main"}'
+        shell: bash
+    
+      - name: Deploy Lambda Function
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.TOKEN_GITHUB }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/proinsighttech/lanchonete-lambda/actions/workflows/pipeline.yml/dispatches \
+            -d '{"ref":"main"}'
+          sleep 180
+        shell: bash
+
+      - name: Get Load Balancer DNS
+        run: |
+          VPC_ID=$(aws ec2 describe-vpcs --filter "Name=tag:Name,Values=main" --query "Vpcs[0].VpcId" --output text)
+          echo "VPC_ID: $VPC_ID"
+      
+          LB_NAME=$(aws elbv2 describe-load-balancers --query "LoadBalancers[?VpcId==\`$VPC_ID\`].LoadBalancerName" --output text)
+          echo "LB_NAME: $LB_NAME"
+          echo "LB_NAME=$LB_NAME" >> $GITHUB_ENV
+      
+          LB_DNS=$(aws elbv2 describe-load-balancers --names $LB_NAME --query 'LoadBalancers[0].DNSName' --output text)
+          echo "LB_DNS: $LB_DNS"
+          echo "LB_DNS=$LB_DNS" >> $GITHUB_ENV
+        
+      - name: Creating Integration
+        run: |
+          sed -i "s/load_balancer = .*/load_balancer = \"${{ env.LB_DNS }}\"/" terraform.tfvars
+          terraform apply -var="integration=true" --auto-approve
+        shell: bash
+        if: env.LB_NAME != ''
+        
+      - name: Apply Swagger File
+        run: |
+          sed -i "s/load_balancer = .*/load_balancer = \"${{ env.LB_DNS }}\"/" terraform.tfvars
+          terraform apply -var="integration=true" -var="swagger_file=api-docs.yaml" -var="load_balancer=${{ env.LB_DNS }}" --auto-approve
+        shell: bash
+        if: env.LB_NAME != ''
+
+      - name: Get API Gateway URL
+        run: |
+          API_ID=$(aws apigateway get-rest-apis --query "items[?name=='snack-shop-api-gateway'].id" --output text)
+          echo "API Gateway URL: https://$API_ID.execute-api.us-west-2.amazonaws.com"
+        shell: bash

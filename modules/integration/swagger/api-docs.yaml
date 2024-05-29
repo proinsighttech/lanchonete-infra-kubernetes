@@ -1,0 +1,3219 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:9000/
+  description: Generated server url
+
+paths:
+  /:
+    get:
+      tags:
+      - root-entry-point-controller
+      operationId: root
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootEntryPointModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: listAll
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelUserModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    post:
+      tags:
+      - user-controller
+      operationId: addUser
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPassInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"         
+  /users/{userId}:
+    get:
+      tags:
+      - user-controller
+      operationId: findUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    put:
+      tags:
+      - user-controller
+      operationId: updateUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel' 
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    delete:
+      tags:
+      - user-controller
+      operationId: removeUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /users/{userId}/groups:
+    get:
+      tags:
+      - user-group-controller
+      operationId: listAllGroup
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelGroupModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}/groups'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /users/{userId}/groups/{groupId}:
+    put:
+      tags:
+      - user-group-controller
+      operationId: addGroup
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}/groups/{groupId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    delete:
+      tags:
+      - user-group-controller
+      operationId: removeGroup
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}/groups/{groupId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /users/{userId}/password:
+    put:
+      tags:
+      - user-controller
+      operationId: changePassword
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordInput'
+        required: true
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/users/{userId}/password'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/admins:
+    get:
+      tags:
+      - snack-shop-admin-user-controller
+      operationId: list_2
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelUserModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/admins'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}:
+    get:
+      tags:
+      - snack-shop-controller
+      operationId: find
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnackShopModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"      
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    put:
+      tags:
+      - snack-shop-controller
+      operationId: updateSnackShop
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnackShopInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnackShopModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"   
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/products/{productId}:
+    get:
+      tags:
+      - product-controller
+      operationId: findProduct
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"   
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products/{productId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    put:
+      tags:
+      - product-controller
+      operationId: updateProduct
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"   
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products/{productId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/products/{productId}/image:
+    get:
+      tags:
+      - product-image-controller
+      operationId: findImage_1
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: accept
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductImageModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"         
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products/{productId}/image'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    put:
+      tags:
+      - product-image-controller
+      operationId: updateImage
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                imageProductInput:
+                  $ref: '#/components/schemas/ImageProductInput'
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductImageModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"             
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products/{productId}/image'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    delete:
+      tags:
+      - product-image-controller
+      operationId: delete
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"         
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products/{productId}/image'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/desactive:
+    put:
+      tags:
+      - snack-shop-controller
+      operationId: inactiveSnackShop
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"   
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/desactive'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/admins/{userId}:
+    put:
+      tags:
+      - snack-shop-admin-user-controller
+      operationId: addAdmin
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"       
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/admins/{userId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    delete:
+      tags:
+      - snack-shop-admin-user-controller
+      operationId: removeAdmin
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"       
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/admins/{userId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/active:
+    put:
+      tags:
+      - snack-shop-controller
+      operationId: activeSnackShop
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"     
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/active'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /products/{productId}/ingredients/{ingredientId}:
+    put:
+      tags:
+      - product-ingredient-controller
+      operationId: addIngredientToProduct
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"       
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/products/{productId}/ingredients/{ingredientId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    delete:
+      tags:
+      - product-ingredient-controller
+      operationId: removeIngredientToProduct
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"     
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/products/{productId}/ingredients/{ingredientId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /payment-methods/{paymentMethodId}:
+    get:
+      tags:
+      - payment-method-controller
+      operationId: find_1
+      parameters:
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"         
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/payment-methods/{paymentMethodId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    put:
+      tags:
+      - payment-method-controller
+      operationId: updatePaymentMethod
+      parameters:
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"             
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/payment-methods/{paymentMethodId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    delete:
+      tags:
+      - payment-method-controller
+      operationId: remove
+      parameters:
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"   
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/payment-methods/{paymentMethodId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              
+  /orders/{orderCode}/ready:
+    put:
+      tags:
+      - order-flow-controller
+      operationId: ready
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}/ready'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders/{orderCode}/prepare:
+    put:
+      tags:
+      - order-flow-controller
+      operationId: prepare
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}/prepare'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders/{orderCode}/delivery:
+    put:
+      tags:
+      - order-flow-controller
+      operationId: delivery
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}/delivery'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders/{orderCode}/confirm:
+    put:
+      tags:
+      - order-flow-controller
+      operationId: confirm
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}/confirm'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders/{orderCode}/cancel:
+    put:
+      tags:
+      - order-flow-controller
+      operationId: cancel
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}/cancel'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /ingredients/{ingredientId}:
+    get:
+      tags:
+      - ingredient-controller
+      operationId: findIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientStockModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/ingredients/{ingredientId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    put:
+      tags:
+      - ingredient-controller
+      operationId: updateIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/ingredients/{ingredientId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    delete:
+      tags:
+      - ingredient-controller
+      operationId: deleteIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+  /groups/{groupId}:
+    get:
+      tags:
+      - group-controller
+      operationId: findGroup
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    put:
+      tags:
+      - group-controller
+      operationId: updateGroup
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    delete:
+      tags:
+      - group-controller
+      operationId: removeGroup_1
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /groups/{groupId}/permissions/{permissionId}:
+    put:
+      tags:
+      - group-permission-controller
+      operationId: addPermission
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: permissionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}/permissions/{permissionId}'
+        passthroughBehavior: when_no_match
+        httpMethod: PUT
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    delete:
+      tags:
+      - group-permission-controller
+      operationId: removePermission
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: permissionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}/permissions/{permissionId}'
+        passthroughBehavior: when_no_match
+        httpMethod: DELETE
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 204
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops:
+    get:
+      tags:
+      - snack-shop-controller
+      operationId: list
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelSnackShopModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    post:
+      tags:
+      - snack-shop-controller
+      operationId: addSnackShop
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnackShopInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnackShopModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /snackshops/{snackShopId}/products:
+    get:
+      tags:
+      - product-controller
+      operationId: listAllProducts
+      parameters:
+      - name: filter
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/ProductFilter'
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModelProductModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    post:
+      tags:
+      - product-controller
+      operationId: addProduct
+      parameters:
+      - name: snackShopId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/snackshops/{snackShopId}/products'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /payment-methods:
+    get:
+      tags:
+      - payment-method-controller
+      operationId: list_4
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelPaymentMethodModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/payment-methods'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    post:
+      tags:
+      - payment-method-controller
+      operationId: addPaymentMethod_1
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/payment-methods'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders:
+    get:
+      tags:
+      - order-controller
+      operationId: findAll
+      parameters:
+      - name: filter
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/OrderFilter'
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: filteredResults
+        in: query
+        required: true
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModelOrderResumeModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+    post:
+      tags:
+      - order-controller
+      operationId: addOrder
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /ingredients:
+    get:
+      tags:
+      - ingredient-controller
+      operationId: findAll_1
+      parameters:
+      - name: filter
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/IngredientFilter'
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModelIngredientStockModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/ingredients'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    post:
+      tags:
+      - ingredient-controller
+      operationId: addIngredient
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/ingredients'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /groups:
+    get:
+      tags:
+      - group-controller
+      operationId: listAll_1
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelGroupModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"      
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+    post:
+      tags:
+      - group-controller
+      operationId: addGroup_1
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupInput'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups'
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 201
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /products/{productId}/ingredients:
+    get:
+      tags:
+      - product-ingredient-controller
+      operationId: listAllIngredients
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelIngredientModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/products/{productId}/ingredients'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /permissions:
+    get:
+      tags:
+      - permission-controller
+      operationId: list_3
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelPermissionModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/permissions'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /orders/{orderCode}:
+    get:
+      tags:
+      - order-controller
+      operationId: find_2
+      parameters:
+      - name: orderCode
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/orders/{orderCode}'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /groups/{groupId}/permissions:
+    get:
+      tags:
+      - group-permission-controller
+      operationId: list_5
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+      - name: authorizationToken
+        in: header
+        required: true
+        schema:
+          type: string
+      security:
+      - api_gateway_authorizer-snack-shop: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionModelPermissionModel'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+      x-amazon-apigateway-integration:
+        uri: 'http://localhost:9000/groups/{groupId}/permissions'
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http_proxy
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+
+  # # /snackshops/{snackshopId}/payment-methods:
+  # #   get:
+  # #     tags:
+  # #     - snack-shop-payment-methods-controller
+  # #     operationId: list_1
+  # #     parameters:
+  # #     - name: snackshopId
+  # #       in: path
+  # #       required: true
+  # #       schema:
+  # #         type: integer
+  # #         format: int64
+  # #     - name: Authorization
+  # #       in: header
+  # #       required: true
+  # #       schema:
+  # #         type: string
+  # #       example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+  # #     - name: authorizationToken
+  # #       in: header
+  # #       required: true
+  # #       schema:
+  # #         type: string
+  # #     security:
+  # #     - api_gateway_authorizer-snack-shop: []
+  # #     responses:
+  # #       "200":
+  # #         description: OK
+  # #         content:
+  # #           application/json:
+  # #             schema:
+  # #               $ref: '#/components/schemas/CollectionModelPaymentMethodModel'
+  # #         headers:
+  # #           Access-Control-Allow-Origin:
+  # #             schema:
+  # #               type: string
+  # #             example: "*"
+  # #     x-amazon-apigateway-integration:
+  # #       uri: 'http://localhost:9000/snackshops/{snackshopId}/payment-methods'
+  # #       passthroughBehavior: when_no_match
+  # #       httpMethod: GET
+  # #       type: http_proxy
+  # #       responses:
+  # #         default:
+  # #           statusCode: 200
+  # #           responseParameters:
+  # #             method.response.header.Access-Control-Allow-Origin: "'*'"
+  # # /snackshops/{snackshopId}/payment-methods/{paymentMethodId}:
+  #   put:
+  #     tags:
+  #     - snack-shop-payment-methods-controller
+  #     operationId: addPaymentMethodId
+  #     parameters:
+  #     - name: snackshopId
+  #       in: path
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+  #     - name: paymentMethodId
+  #       in: path
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64 
+  #     - name: Authorization
+  #       in: header
+  #       required: true
+  #       schema:
+  #         type: string
+  #       example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+  #     - name: authorizationToken
+  #       in: header
+  #       required: true
+  #       schema:
+  #         type: string
+  #     security:
+  #     - api_gateway_authorizer-snack-shop: []
+  #     responses:
+  #       "204":
+  #         description: No Content
+  #         headers:
+  #           Access-Control-Allow-Origin:
+  #             schema:
+  #               type: string
+  #             example: "*"
+  #     x-amazon-apigateway-integration:
+  #       uri: 'http://localhost:9000/snackshops/{snackshopId}/payment-methods/{paymentMethodId}'
+  #       passthroughBehavior: when_no_match
+  #       httpMethod: PUT
+  #       type: http_proxy
+  #       responses:
+  #         default:
+  #           statusCode: 204
+  #           responseParameters:
+  #             method.response.header.Access-Control-Allow-Origin: "'*'"
+
+  #   delete:
+  #     tags:
+  #     - snack-shop-payment-methods-controller
+  #     operationId: removePaymentMethod
+  #     parameters:
+  #     - name: snackshopId
+  #       in: path
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+  #     - name: paymentMethodId
+  #       in: path
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+  #     - name: Authorization
+  #       in: header
+  #       required: true
+  #       schema:
+  #         type: string
+  #       example: "Basic dG90ZW1AZW1haWwuY29tOjEyMw=="
+  #     - name: authorizationToken
+  #       in: header
+  #       required: true
+  #       schema:
+  #         type: string
+  #     security:
+  #     - api_gateway_authorizer-snack-shop: []
+  #     responses:
+  #       "204":
+  #         description: No Content
+  #         headers:
+  #           Access-Control-Allow-Origin:
+  #             schema:
+  #               type: string
+  #             example: "*"
+  #     x-amazon-apigateway-integration:
+  #       uri: 'http://localhost:9000/snackshops/{snackshopId}/payment-methods/{paymentMethodId}'
+  #       passthroughBehavior: when_no_match
+  #       httpMethod: DELETE
+  #       type: http_proxy
+  #       responses:
+  #         default:
+  #           statusCode: 204
+  #           responseParameters:
+  #             method.response.header.Access-Control-Allow-Origin: "'*'"
+
+
+
+
+components:
+  securitySchemes:
+    api_gateway_authorizer-snack-shop:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: custom
+      x-amazon-apigateway-authorizer:
+        type: request
+        authorizerUri: 'arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:279044386247:function:api_gateway_authorizer-snack-shop/invocations'
+        authorizerCredentials: arn:aws:iam::279044386247:role/api_gateway_auth_role-snack-shop
+        identitySource: method.request.header.Authorization, method.request.querystring.cpf
+  schemas:
+    UserInput:
+      required:
+      - cpf
+      - email
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+    Links:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Link'
+    UserModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    PasswordInput:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+    SnackShopInput:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+    SnackShopModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        active:
+          type: boolean
+        _links:
+          $ref: '#/components/schemas/Links'
+    ProductInput:
+      required:
+      - active
+      - description
+      - name
+      - price
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        active:
+          type: boolean
+    IngredientModel:
+      type: object
+      properties:
+        ingredientName:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    ProductModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        active:
+          type: boolean
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    ImageProductInput:
+      required:
+      - description
+      - file
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        description:
+          type: string
+    ProductImageModel:
+      type: object
+      properties:
+        fileName:
+          type: string
+        description:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+          format: int64
+        _links:
+          $ref: '#/components/schemas/Links'
+    PaymentMethodInput:
+      required:
+      - description
+      type: object
+      properties:
+        description:
+          type: string
+    PaymentMethodModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    IngredientInput:
+      required:
+      - description
+      - name
+      - quantity
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    GroupInput:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+    GroupModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    UserPassInput:
+      required:
+      - cpf
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        password:
+          type: string
+    OrderInput:
+      required:
+      - items
+      - paymentMethod
+      - snackShop
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/UserCpfInput'
+        snackShop:
+          $ref: '#/components/schemas/SnackShopIdInput'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethodIdInput'
+        items:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemInput'
+    OrderItemInput:
+      required:
+      - productId
+      - quantity
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        observation:
+          type: string
+    PaymentMethodIdInput:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    SnackShopIdInput:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    UserCpfInput:
+      type: object
+      properties:
+        cpf:
+          type: string
+    OrderItemModel:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        unitPrice:
+          type: number
+        totalPrice:
+          type: number
+        observation:
+          type: string
+        productIngredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    OrderModel:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        total:
+          type: number
+        status:
+          type: string
+        receptionDate:
+          type: string
+          format: date-time
+        cancelDate:
+          type: string
+          format: date-time
+        preparationDate:
+          type: string
+          format: date-time
+        confirmationDate:
+          type: string
+          format: date-time
+        finalizationDate:
+          type: string
+          format: date-time
+        snackShop:
+          $ref: '#/components/schemas/SnackShopOnlyNameModel'
+        client:
+          $ref: '#/components/schemas/UserModel'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethodModel'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    SnackShopOnlyNameModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    CollectionModelUserModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    CollectionModelGroupModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            groups:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    CollectionModelSnackShopModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            snackShops:
+              type: array
+              items:
+                $ref: '#/components/schemas/SnackShopModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    CollectionModelPaymentMethodModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            paymentMethods:
+              type: array
+              items:
+                $ref: '#/components/schemas/PaymentMethodModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    ProductFilter:
+      type: object
+      properties:
+        category:
+          type: string
+        snackShopId:
+          type: integer
+          format: int64
+        active:
+          type: boolean
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    PagedModelProductModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            products:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    CollectionModelIngredientModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            ingredientModelList:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    CollectionModelPermissionModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            permissions:
+              type: array
+              items:
+                $ref: '#/components/schemas/PermissionModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    PermissionModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    OrderFilter:
+      type: object
+      properties:
+        status:
+          type: string
+        clientId:
+          type: integer
+          format: int64
+        snackShopId:
+          type: integer
+          format: int64
+        receivedDateStart:
+          type: string
+          format: date-time
+        receivedDateEnd:
+          type: string
+          format: date-time
+    OrderResumeModel:
+      type: object
+      properties:
+        code:
+          type: string
+        total:
+          type: number
+        status:
+          type: string
+        receptionDate:
+          type: string
+          format: date-time
+        confirmationDate:
+          type: string
+          format: date-time
+        preparationDate:
+          type: string
+          format: date-time
+        finalizationDate:
+          type: string
+          format: date-time
+        snackShop:
+          $ref: '#/components/schemas/SnackShopOnlyNameModel'
+        client:
+          $ref: '#/components/schemas/UserModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+    PagedModelOrderResumeModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            orders:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderResumeModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    IngredientFilter:
+      type: object
+      properties:
+        ingredientName:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+    IngredientStockModel:
+      type: object
+      properties:
+        ingredientName:
+          type: string
+        ingredientDescription:
+          type: string
+        stockQuantity:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    PagedModelIngredientStockModel:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            ingredientStockModelList:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientStockModel'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    RootEntryPointModel:
+      type: object
+      properties:
+        _links:
+          $ref: '#/components/schemas/Links'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        hreflang:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        profile:
+          type: string
+        name:
+          type: string
+        templated:
+          type: boolean
