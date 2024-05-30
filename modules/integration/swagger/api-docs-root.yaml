@@ -90,6 +90,7 @@ components:
         authorizerUri: 'arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:279044386247:function:api_gateway_authorizer-snack-shop/invocations'
         authorizerCredentials: arn:aws:iam::279044386247:role/api_gateway_auth_role-snack-shop
         identitySource: method.request.header.Authorization, method.request.querystring.cpf
+        authorizerResultTtlInSeconds: 0
   schemas:
     RootEntryPointModel:
       type: object
