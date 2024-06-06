@@ -92,13 +92,6 @@ jobs:
           echo "LB_DNS: $LB_DNS"
           echo "LB_DNS=$LB_DNS" >> $GITHUB_ENV
         
-      - name: Creating Integration
-        run: |
-          sed -i "s/load_balancer = .*/load_balancer = \"${{ env.LB_DNS }}\"/" terraform.tfvars
-          terraform apply -var="integration=true" --auto-approve
-        shell: bash
-        if: env.LB_NAME != ''
-        
       - name: Apply Swagger File
         run: |
           sed -i "s/load_balancer = .*/load_balancer = \"${{ env.LB_DNS }}\"/" terraform.tfvars
